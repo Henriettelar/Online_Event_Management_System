@@ -77,10 +77,10 @@ public class UserAdmin {
         }
     }
 
-    public void removeUser(String name) {
+    public boolean removeUser(String name) {
         if (!(currentUser instanceof Admin)) {
             System.out.println("Error! Only admins can remove users!");
-            return;
+            return false;
         }
         User toRemove = null;
         for (User user : users) {
@@ -92,12 +92,14 @@ public class UserAdmin {
         if (toRemove != null) {
             if (toRemove == currentUser) {
                 System.out.println("You can't remove this admin user.");
-                return;
+                return false;
             }
             users.remove(toRemove);
             System.out.println("User " + toRemove.getName() + " has been deleted.");
+            return true;
         } else {
             System.out.println("User not found.");
+            return false;
         }
     }
 

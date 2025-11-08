@@ -14,7 +14,7 @@ public class Main {
 
         while(runProgram){
             if (firstUsing.getCurrentUser() == null){
-                System.out.println("---Menu---");
+                System.out.println("\n---Menu---");
                 System.out.println("1. Register user");
                 System.out.println("2. Login");
                 System.out.println("3. Exit");
@@ -45,7 +45,7 @@ public class Main {
     }
 
     private static void registerMenu() {
-        System.out.println("---Registering new user---");
+        System.out.println("\n---Registering new user---");
         System.out.print("Enter email: ");
         String email = input.nextLine();
         System.out.print("Enter username: ");
@@ -57,7 +57,7 @@ public class Main {
     }
 
     private static void loginMenu() {
-        System.out.println("---Login---");
+        System.out.println("\n---Login---");
         System.out.print("Username: ");
         String username = input.nextLine();
         System.out.print("Password: ");
@@ -67,7 +67,7 @@ public class Main {
     }
 
     private static void userMenu(User user) {
-        System.out.println("---User Menu---");
+        System.out.println("\n---User Menu---");
         System.out.println("1. Create event");
         System.out.println("2. View events");
         System.out.println("3. Join events");
@@ -91,8 +91,10 @@ public class Main {
         System.out.println("1. View events");
         System.out.println("2. Generate admin-report");
         System.out.println("3. Register new admin");
-        System.out.println("4. Unlock user");
-        System.out.println("5. Log out");
+        System.out.println("4. Register new user");
+        System.out.println("5. Delete user");
+        System.out.println("6. Unlock user");
+        System.out.println("7. Log out");
         System.out.print("choose an option: ");
         String choice = input.nextLine();
 
@@ -100,15 +102,17 @@ public class Main {
             case "1" -> firstManager.listEvents();
             case "2" -> generateAdminReport(admin);
             case "3" -> createAdmin();
-            case "4" -> unlockUserMenu();
-            case "5" -> firstUsing.logout();
+            case "4" -> registerMenu();
+            case "5" -> deleteUser();
+            case "6" -> unlockUserMenu();
+            case "7" -> firstUsing.logout();
             default -> System.out.println("Invalid input");
         }
     }
 
 
     private static void createEvent(User user) {
-        System.out.println("--- Create Event ---");
+        System.out.println("\n--- Create Event ---");
         System.out.print("Do you want to specify a type? (yes/no): ");
         String choice = input.nextLine().trim().toLowerCase();
 
@@ -139,6 +143,7 @@ public class Main {
     }
 
     private static void joinEvent(User user) {
+        System.out.println("\n--- Join Event ---");
         firstManager.listEvents();
         System.out.print("Enter name of event you want to participate in: ");
         String title = input.nextLine();
@@ -159,7 +164,7 @@ public class Main {
     }
 
     private static void createAdmin() {
-        System.out.print("New admin name: ");
+        System.out.print("\nNew admin name: ");
         String name = input.nextLine();
         System.out.print("Email: ");
         String email = input.nextLine();
@@ -169,7 +174,7 @@ public class Main {
     }
 
     private static void updateEvent(User user) {
-        System.out.println("--- Update Your Events ---");
+        System.out.println("\n--- Update Your Events ---");
 
         List<Event> myEvents = new ArrayList<>();
         for (Event e : firstManager.getEvents()) {
@@ -228,6 +233,30 @@ public class Main {
                 selectedEvent.changeDescription(newDesc);
             }
             default -> System.out.println("Invalid choice.");
+        }
+    }
+
+    private static void deleteUser() {
+        boolean done = false;
+
+        while (!done) {
+            System.out.println("\n--- Delete Users ---");
+            firstUsing.listUsers();
+            System.out.print("Which user would you like to delete? (or type 'exit' to go back): ");
+            String choice = input.nextLine().trim();
+
+            if (choice.equalsIgnoreCase("exit")) {
+                System.out.println("Returning to admin menu...");
+                done = true;
+                break;
+            }
+
+            boolean removed = firstUsing.removeUser(choice);
+            if (removed) {
+                done = true;
+            } else {
+                System.out.println("No user found with that name. Please try again.\n");
+            }
         }
     }
 
