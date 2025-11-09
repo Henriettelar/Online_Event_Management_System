@@ -72,15 +72,19 @@ public class Main {
         System.out.println("2. View events");
         System.out.println("3. Join events");
         System.out.println("4. Update my events");
-        System.out.println("4. Log out");
+        System.out.println("5. See participants for an event");
+        System.out.println("6. Leave event");
+        System.out.println("7. Log out");
         System.out.print("Choose an option: ");
         String choice = input.nextLine();
         switch (choice) {
             case "1" -> createEvent(user);
             case "2" -> firstManager.listEvents();
             case "3" -> joinEvent(user);
-            case "4" -> firstUsing.logout();
-            case "5" -> updateEvent(user);
+            case "4" -> updateEvent(user);
+            case "5" -> viewParticipants(user);
+            case "6" -> leaveEvent(user);
+            case "7" -> firstUsing.logout();
             default -> System.out.println("Invalid choice.");
         }
 
@@ -151,6 +155,36 @@ public class Main {
         for (Event e : firstManager.getEvents()) {
             if (e.getTitle().equalsIgnoreCase(title)) {
                 e.addParticipant(user);
+                return;
+            }
+        }
+        System.out.println("Event not found.");
+    }
+
+    private static void leaveEvent(User user) {
+        firstManager.listEvents();
+        System.out.print("Enter event title to leave: ");
+        String title = input.nextLine();
+
+        for (Event e : firstManager.getEvents()) {
+            if (e.getTitle().equalsIgnoreCase(title)) {
+                e.getNotifications().removeNotifyingUser(user);
+                System.out.println(user.getName() + " has left the event '" + e.getTitle() + "'.");
+                return;
+            }
+        }
+        System.out.println("Event not found.");
+    }
+
+    private static void viewParticipants(User user) {
+        firstManager.listEvents();
+        System.out.print("Enter event title to view participants: ");
+        String title = input.nextLine();
+
+        for (Event e : firstManager.getEvents()) {
+            if (e.getTitle().equalsIgnoreCase(title)) {
+                System.out.println("Participants for event: " + e.getTitle());
+                e.getNotifications().listOfUsersForEvent();
                 return;
             }
         }

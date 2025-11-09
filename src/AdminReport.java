@@ -16,13 +16,12 @@ public class AdminReport implements Report {
             return;
         }
 
-        // Først kør den normale rapport
         decoratedReport.generateReport();
 
-        // Udskriv systemdata
+
         System.out.println("\n --- ADMIN REPORT ---");
 
-        // Brugerliste
+
         UserAdmin ua = UserAdmin.getInstance();
         System.out.println("\nUsers in the system:");
         List<User> users = ua.getAllUsers();
@@ -30,7 +29,7 @@ public class AdminReport implements Report {
             System.out.println(" - " + u.getName() + " (" + (u instanceof Admin ? "Admin" : "User") + ")");
         }
 
-        // Eventliste
+
         EventManager em = EventManager.getInstance();
         List<Event> events = em.getEvents();
 

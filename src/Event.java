@@ -14,6 +14,7 @@ public class Event {
 
     public Event(String title, String description, String date, String place, User creator) {
         this(title, description, date, place, "Just an event", creator);
+        this.notifications = new UpdateNotification();
     }
 
     // Event med type
@@ -24,6 +25,7 @@ public class Event {
         this.place = place;
         this.type = type;
         this.createdBy = createdBy;
+        this.notifications = new UpdateNotification();
     }
 
     public void setUpdateNotification(UpdateNotification notifications) {
@@ -32,6 +34,10 @@ public class Event {
 
     public void addParticipant(User user) {
         participants.add(user);
+        if (notifications == null) {
+            notifications = new UpdateNotification();
+        }
+        notifications.addNotifyingUser(user);
         System.out.println(user + " has been added to event: " + title);
     }
 
@@ -71,19 +77,23 @@ public class Event {
         return  createdBy;
     }
 
+    public UpdateNotification getNotifications() {
+        return notifications;
+    }
 
     public void changeDate(String date) {
         this.date = date;
-        notifications.notifyAllUsers("Date to event " + type + " has been changed to " + date);
+        notifyAllUsers("Date for event '" + title + "' (" + type + ") has been changed to: " + date);
     }
+
     public void changePlace(String place) {
         this.place = place;
-        notifications.notifyAllUsers("Location to event" + type + "has been changed to " + place);
+        notifyAllUsers("Location for event '" + title + "' (" + type + ") has been changed to: " + place);
     }
 
     public void changeDescription(String description) {
         this.description = description;
-        notifications.notifyAllUsers("Description to event" + type + "has been changed to " + description);
+        notifyAllUsers("Description for event '" + title + "' (" + type + ") has been updated to: " + description);
     }
 
     private void notifyAllUsers(String message) {
